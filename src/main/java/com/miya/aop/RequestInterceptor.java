@@ -1,6 +1,8 @@
 package com.miya.aop;
 
-import java.lang.reflect.Method;
+import java.util.Enumeration;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -44,23 +46,40 @@ public class RequestInterceptor {
 	@Around("request()")
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
 		Signature signature = pjp.getSignature();
-		String methodName = signature.getName();
 		MethodSignature methodSignature = (MethodSignature) signature;
-		Method method = methodSignature.getMethod();
-		// RequestAnnotation ao = method.getAnnotation(RequestAnnotation.class); //针对特定注解可做处理
-		Object res = pjp.proceed();
-		// 获取请求参数
-		Object[] pars = pjp.getArgs();
-		// 获取请求参数名称
+		// Method method = methodSignature.getMethod();
+		String methodName = signature.getName();
 		String[] parNames = methodSignature.getParameterNames();
 		JSONObject json = new JSONObject();
+		Object[] pars = pjp.getArgs();
+		// RequestAnnotation ao = method.getAnnotation(RequestAnnotation.class); //针对特定注解可做处理
+		Object res = pjp.proceed();
 		for (int i = 0; i < parNames.length; i++) {
-			json.put(parNames[i], pars[i]);
+			// 针对于请求参数为HttpServletRequest时增加解析逻辑
+			if (pars[i] instanceof HttpServletRequest) {
+				json = getRequestString((HttpServletRequest) pars[i]);
+			} else {
+				json.put(parNames[i], pars[i]);
+			}
 		}
-		_LOGGER.info("{}:{}", methodName, json.toString());
-		_LOGGER.info(method.getName() + " - " + (System.currentTimeMillis() - start.get()));
+		try {
+			JSONObject resJson = (JSONObject) JSONObject.toJSON(res);
+			_LOGGER.info("接口:{},接收信息:{};返回信息:{};请求耗时:{}ms", methodName, json.toString(), resJson, (System.currentTimeMillis() - start.get()));
+		} catch (Exception e) {
+			_LOGGER.error("返回信息解析异常,{}:{}", methodName, e.getMessage());
+		}
 		start.remove();
 		return res;
+	}
+
+	private JSONObject getRequestString(HttpServletRequest request) {
+		JSONObject json = new JSONObject();
+		Enumeration<String> keys = request.getParameterNames();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			json.put(key, request.getParameter(key));
+		}
+		return json;
 	}
 
 }
