@@ -4,8 +4,8 @@ server:
 logging:
   path: logs
   level:
-    com.miya: debug
-    org.hibernate: info
+#    com.miya: info
+    org.hibernate.SQL: debug
   file:
     max-history: 30
 # 数据源配置 
@@ -21,7 +21,7 @@ spring:
     #3、update：启动时会根据实体类生成表，当实体类属性变动的时候，表结构也会更新，在初期开发阶段使用此选项。
     #4、validate：启动时验证实体类和数据表是否一致，在我们数据结构稳定时采用此选项。
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
     url: 
     username: 
@@ -31,7 +31,7 @@ spring:
     serialization:
       indent-output: true 
   redis:
-    host: 
+    host:
     port: 6379
     password: 
     timeout:
