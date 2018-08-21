@@ -1,0 +1,18 @@
+
+<configuration>
+  
+   <!-- ID of the service. It should be unique accross the Windows system-->
+  <id>memberClient</id>
+  <!-- Display name of the service -->
+  <name>Miya memberClient</name>
+  <!-- Service description -->
+  <description>米雅会员前置程序</description>
+  <logpath>%BASE%\log</logpath>
+
+  <!-- Path to the executable, which should be started -->
+  <workingdirectory>%BASE%\</workingdirectory>
+
+  <executable>java</executable>
+  <arguments>-jar memberClient.jar -Xms512m -Xmx1024m </arguments>
+
+</configuration>
