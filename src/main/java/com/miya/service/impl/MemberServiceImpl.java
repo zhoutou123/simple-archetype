@@ -70,4 +70,12 @@ public class MemberServiceImpl implements MemberService {
 		JSONObject resJson = httpClient.sendHttp(okHttpClient, request);
 	}
 
+	/**
+	 * @see com.miya.service.MemberService#produceTest(java.lang.Integer)
+	 */
+	@Override
+	public int produceTest(Integer in) {
+		return memberInfoRepository.produceTest(in);
+	}
+
 }

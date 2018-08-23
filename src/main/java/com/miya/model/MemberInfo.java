@@ -2,10 +2,15 @@ package com.miya.model;
 
 import java.util.Date;
 
+import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +20,12 @@ import javax.persistence.Table;
  */
 @Table(name = "member_info_0")
 @Entity
+@NamedStoredProcedureQuery(name = "in_param", procedureName = "in_param", resultSetMappings = "map", parameters = {
+		@StoredProcedureParameter(type = Integer.class, mode = ParameterMode.IN, name = "p_in"),
+		@StoredProcedureParameter(type = Integer.class, mode = ParameterMode.IN, name = "str"),
+		@StoredProcedureParameter(type = Integer.class, mode = ParameterMode.OUT, name = "o_in"),
+		@StoredProcedureParameter(type = Integer.class, mode = ParameterMode.OUT, name = "ss") })
+@SqlResultSetMapping(name = "map", columns = { @ColumnResult(name = "o_in"), @ColumnResult(name = "ss") })
 public class MemberInfo {
 
 	@Id

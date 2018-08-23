@@ -25,4 +25,6 @@ public interface MemberService {
 
 	public void httpLink();
 
+	public int produceTest(Integer in);
+
 }

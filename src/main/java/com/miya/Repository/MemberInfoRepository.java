@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.miya.model.MemberInfo;
 
@@ -30,5 +32,13 @@ public interface MemberInfoRepository extends PagingAndSortingRepository<MemberI
 	@Modifying
 	@Query(value = "update member_info_0 set phone =?1 where saas_id=?2 and member_id=?3", nativeQuery = true)
 	int updateMmeberPhone(String phone, String saasId, String memberId);
+
+	/**
+	 * @description 只有一个返回参数的程序过程可使用这种方式调用
+	 * @author zhoutuo
+	 * @date 2018年8月23日 上午9:45:35
+	 */
+	@Procedure("in_param")
+	int produceTest(@Param("p_in") Integer in);
 
 }
