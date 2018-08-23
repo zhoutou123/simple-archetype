@@ -27,4 +27,6 @@ public interface MemberService {
 
 	public int produceTest(Integer in);
 
+	public List<Integer> excuteProduce();
+
 }

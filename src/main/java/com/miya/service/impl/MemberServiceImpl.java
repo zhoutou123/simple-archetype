@@ -1,6 +1,10 @@
 package com.miya.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.StoredProcedureQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +41,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberInfoRepository memberInfoRepository;
+
+	@Autowired
+	private EntityManager entityManager;
 
 	public MemberInfo findByMemberIdAndSaasId(String memberId, String saasId) {
 		return memberInfoRepository.findByMemberIdAndSaasId(memberId, saasId);
@@ -76,6 +83,22 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int produceTest(Integer in) {
 		return memberInfoRepository.produceTest(in);
+	}
+
+	/**
+	 * @see com.miya.service.MemberService#excuteProduce()
+	 */
+	@Override
+	public List<Integer> excuteProduce() {
+		List<Integer> list = new ArrayList<>();
+		StoredProcedureQuery store = entityManager.createNamedStoredProcedureQuery("in_param");
+		store.setParameter("p_in", 1);
+		store.setParameter("str", 1);
+		Integer o_in = (Integer) store.getOutputParameterValue("o_in");
+		Integer ss = (Integer) store.getOutputParameterValue("ss");
+		list.add(o_in);
+		list.add(ss);
+		return list;
 	}
 
 }

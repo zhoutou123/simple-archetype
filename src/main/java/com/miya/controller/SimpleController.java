@@ -1,10 +1,6 @@
 package com.miya.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.StoredProcedureQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.miya.Repository.MemberInfoRepository;
 import com.miya.model.MemberInfo;
 import com.miya.service.MemberService;
 import com.miya.utils.Result;
@@ -27,13 +22,7 @@ import com.miya.utils.Result;
 public class SimpleController {
 
 	@Autowired
-	private EntityManager entityManager;
-
-	@Autowired
 	private MemberService memberService;
-
-	@Autowired
-	private MemberInfoRepository memberInfoRepository;
 
 	@RequestMapping("/findByMemberIdAndSaasId")
 	public Result findByMemberIdAndSaasId() {
@@ -65,17 +54,9 @@ public class SimpleController {
 		return Result.success(memberInfo);
 	}
 
-	@RequestMapping("/produceTest")
-	public Result produceTest(@RequestParam Integer in) {
-
-		StoredProcedureQuery store = entityManager.createNamedStoredProcedureQuery("in_param");
-		store.setParameter("p_in", 1);
-		store.setParameter("str", 1);
-		Integer o_in = (Integer) store.getOutputParameterValue("o_in");
-		Integer ss = (Integer) store.getOutputParameterValue("ss");
-		List<Integer> list = new ArrayList<>();
-		list.add(o_in);
-		list.add(ss);
+	@RequestMapping("/produce")
+	public Result produce() {
+		List<Integer> list = memberService.excuteProduce();
 		return Result.success(list);
 
 	}
