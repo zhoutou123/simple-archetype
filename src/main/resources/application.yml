@@ -23,17 +23,17 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:mysql://120.26.100.216/crm-member?useSSL=true&serverTimezone=UTC&characterEncoding=utf8&autoReconnect=true
-    username: root
-    password: ecf73b5e2b
+    url:
+    username:
+    password:
     driver-class-name: com.mysql.jdbc.Driver
   jackson:
     serialization:
       indent-output: true 
   redis:
-    host: 47.97.19.30
+    host:
     port: 6379
-    password: redis@miya
+    password:
     timeout:
       seconds: 2000
     database: 0
